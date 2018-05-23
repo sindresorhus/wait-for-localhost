@@ -22,9 +22,6 @@ $ wait-for-localhost --help
   Usage
     $ wait-for-localhost [port]
 
-  Options
-    --interval  Interval in milliseconds to poll for localhost [Default: 200]
-
   Example
     $ wait-for-localhost 8080 && echo 'Server is ready'
 ```
