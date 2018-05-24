@@ -1,6 +1,6 @@
 # wait-for-localhost [![Build Status](https://travis-ci.org/sindresorhus/wait-for-localhost.svg?branch=master)](https://travis-ci.org/sindresorhus/wait-for-localhost)
 
-> Wait for localhost to be ready from the command-line
+> Wait for localhost to be ready from the command-line and Node.js
 
 Useful if you need a local server to be ready to accept requests before executing the next command.
 
@@ -16,6 +16,8 @@ $ npm install --global wait-for-localhost
 
 ## Usage
 
+### CLI
+
 ```
 $ wait-for-localhost --help
 
@@ -26,6 +28,13 @@ $ wait-for-localhost --help
     $ wait-for-localhost 8080 && echo 'Server is ready'
 ```
 
+### Node.js API
+
+```
+import waitForLocalhost from 'wait-for-localhost';
+
+waitForLocalhost(8080).then(() => console.log('Server is ready'));
+```
 
 ## Related
 

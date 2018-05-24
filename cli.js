@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
-const http = require('http');
 const meow = require('meow');
+const waitForLocalhost = require('.');
 
 const cli = meow(`
 	Usage
@@ -18,19 +18,12 @@ const cli = meow(`
 
 const [port] = cli.input;
 
-const retry = () => setTimeout(main, 200); // eslint-disable-line no-use-before-define
-
-const main = () => {
-	const request = http.request({method: 'HEAD', port}, response => {
-		if (response.statusCode === 200) {
-			process.exit(0);
-		}
-
-		retry();
+waitForLocalhost(port)
+	// eslint-disable-next-line promise/prefer-await-to-then
+	.then(() => {
+		process.exit();
+	})
+	.catch(error => {
+		console.error(error);
+		process.exit(2);
 	});
-
-	request.on('error', retry);
-	request.end();
-};
-
-main();
