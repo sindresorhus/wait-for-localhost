@@ -31,10 +31,14 @@ $ wait-for-localhost --help
 ### Node.js API
 
 ```
-import waitForLocalhost from 'wait-for-localhost';
+const waitForLocalhost = require('wait-for-localhost');
 
-waitForLocalhost(8080).then(() => console.log('Server is ready'));
+(async () => {
+	await waitForLocalhost(8080);
+	console.log('Server is ready');
+})();
 ```
+
 
 ## Related
 
