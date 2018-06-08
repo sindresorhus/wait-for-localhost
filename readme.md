@@ -14,7 +14,7 @@ $ npm install --global wait-for-localhost
 
 ## Usage
 
-```
+```js
 const waitForLocalhost = require('wait-for-localhost');
 
 (async () => {
