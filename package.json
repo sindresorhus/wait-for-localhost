@@ -1,7 +1,7 @@
 {
 	"name": "wait-for-localhost",
 	"version": "1.0.0",
-	"description": "Wait for localhost to be ready from the command-line",
+	"description": "Wait for localhost to be ready",
 	"license": "MIT",
 	"repository": "sindresorhus/wait-for-localhost",
 	"author": {
@@ -9,28 +9,23 @@
 		"email": "sindresorhus@gmail.com",
 		"url": "sindresorhus.com"
 	},
-	"bin": {
-		"wait-for-localhost": "cli.js"
-	},
 	"engines": {
-		"node": ">=8"
+		"node": ">=6"
 	},
 	"scripts": {
 		"test": "xo && ava"
 	},
 	"files": [
-		"cli.js",
 		"index.js"
 	],
 	"keywords": [
-		"cli-app",
-		"cli",
 		"wait",
 		"localhost",
 		"server",
 		"port",
 		"delay",
-		"sleep"
+		"sleep",
+		"ready"
 	],
 	"dependencies": {
 		"meow": "^5.0.0"
@@ -39,7 +34,6 @@
 		"ava": "*",
 		"create-test-server": "^2.1.1",
 		"delay": "^2.0.0",
-		"execa": "^0.10.0",
 		"xo": "*"
 	}
 }

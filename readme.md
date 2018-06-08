@@ -1,10 +1,8 @@
 # wait-for-localhost [![Build Status](https://travis-ci.org/sindresorhus/wait-for-localhost.svg?branch=master)](https://travis-ci.org/sindresorhus/wait-for-localhost)
 
-> Wait for localhost to be ready from the command-line and Node.js
+> Wait for localhost to be ready
 
-Useful if you need a local server to be ready to accept requests before executing the next command.
-
-I personally use this to wait for [`webpack-dev-server`](https://github.com/webpack/webpack-dev-server) to be ready before launching Electron.
+Useful if you need a local server to be ready to accept requests before doing other things.
 
 
 ## Install
@@ -16,20 +14,6 @@ $ npm install --global wait-for-localhost
 
 ## Usage
 
-### CLI
-
-```
-$ wait-for-localhost --help
-
-  Usage
-    $ wait-for-localhost [port]
-
-  Example
-    $ wait-for-localhost 8080 && echo 'Server is ready'
-```
-
-### Node.js API
-
 ```
 const waitForLocalhost = require('wait-for-localhost');
 
@@ -40,9 +24,22 @@ const waitForLocalhost = require('wait-for-localhost');
 ```
 
 
+## API
+
+### waitForLocalHost([port])
+
+Returns a `Promise` that settles when localhost is ready.
+
+#### port
+
+Type: `number`<br>
+Default: `80`
+
+
 ## Related
 
-- [delay-cli](https://github.com/sindresorhus/delay-cli) - Delay execution for a given amount of seconds
+- [wait-for-localhost-cli](https://github.com/sindresorhus/wait-for-localhost-cli) - CLI for this module
+- [delay](https://github.com/sindresorhus/delay) - Delay execution for a given amount of seconds
 
 
 ## License
