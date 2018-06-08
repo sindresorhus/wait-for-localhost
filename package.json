@@ -19,7 +19,8 @@
 		"test": "xo && ava"
 	},
 	"files": [
-		"cli.js"
+		"cli.js",
+		"index.js"
 	],
 	"keywords": [
 		"cli-app",
