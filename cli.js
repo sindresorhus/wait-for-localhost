@@ -18,12 +18,12 @@ const cli = meow(`
 
 const [port] = cli.input;
 
-waitForLocalhost(port)
-	// eslint-disable-next-line promise/prefer-await-to-then
-	.then(() => {
+(async () => {
+	try {
+		await waitForLocalhost(port);
 		process.exit();
-	})
-	.catch(error => {
+	} catch (error) {
 		console.error(error);
 		process.exit(2);
-	});
+	}
+})();
