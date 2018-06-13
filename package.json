@@ -27,9 +27,6 @@
 		"sleep",
 		"ready"
 	],
-	"dependencies": {
-		"meow": "^5.0.0"
-	},
 	"devDependencies": {
 		"ava": "*",
 		"create-test-server": "^2.1.1",
