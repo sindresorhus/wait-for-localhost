@@ -32,7 +32,7 @@ Returns a `Promise` that settles when localhost is ready.
 
 #### options
 
-Type: `object`
+Type: `Object`
 
 ##### port
 
@@ -44,7 +44,7 @@ Default: `80`
 Type: `string`<br>
 Default: `false`
 
-Use the `GET` http-method to check if the server is running, otherwise use `HEAD`.
+Use the `GET` HTTP-method instead of `HEAD` to check if the server is running.
 
 
 ## Related
