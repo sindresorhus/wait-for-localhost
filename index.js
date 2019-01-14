@@ -1,9 +1,7 @@
 const http = require('http');
 
 module.exports = options => {
-	options = {
-		...options
-	};
+	options = Object.assign({}, options);
 
 	return new Promise(resolve => {
 		const retry = () => setTimeout(main, 200);
