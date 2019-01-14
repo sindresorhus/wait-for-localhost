@@ -13,7 +13,7 @@ test('main', async t => {
 		t.pass();
 	});
 
-	await waitForLocalhost(server.port);
+	await waitForLocalhost({port: server.port});
 
 	t.pass();
 
@@ -30,8 +30,9 @@ test('use get method', async t => {
 		t.pass();
 	});
 
-	await waitForLocalhost(server.port, {
-		method: 'get'
+	await waitForLocalhost({
+		port: server.port,
+		useGet: true
 	});
 
 	t.pass();

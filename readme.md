@@ -26,21 +26,25 @@ const waitForLocalhost = require('wait-for-localhost');
 
 ## API
 
-### waitForLocalHost([port], [options])
+### waitForLocalHost([options])
 
 Returns a `Promise` that settles when localhost is ready.
 
-#### port
+#### options
+
+Type: `object`
+
+##### port
 
 Type: `number`<br>
 Default: `80`
 
-#### options
-
-##### method
+##### useGet
 
 Type: `string`<br>
-Default: `HEAD`
+Default: `false`
+
+Use the `GET` http-method to check if the server is running, otherwise use `HEAD`.
 
 
 ## Related
