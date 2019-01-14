@@ -1,11 +1,23 @@
 const http = require('http');
 
-module.exports = port =>
-	new Promise(resolve => {
-		const retry = () => setTimeout(main, 200); // eslint-disable-line no-use-before-define
+module.exports = (port, options) => {
+	if (typeof port === 'object') {
+		options = port;
+		port = 80;
+	}
+
+	options = {
+		method: 'HEAD',
+		...options
+	};
+
+	return new Promise(resolve => {
+		const retry = () => setTimeout(main, 200);
+
+		const method = options.method.toUpperCase();
 
 		const main = () => {
-			const request = http.request({method: 'HEAD', port}, response => {
+			const request = http.request({method, port}, response => {
 				if (response.statusCode === 200) {
 					return resolve();
 				}
@@ -19,3 +31,4 @@ module.exports = port =>
 
 		main();
 	});
+};

@@ -26,7 +26,7 @@ const waitForLocalhost = require('wait-for-localhost');
 
 ## API
 
-### waitForLocalHost([port])
+### waitForLocalHost([port], [options])
 
 Returns a `Promise` that settles when localhost is ready.
 
@@ -34,6 +34,13 @@ Returns a `Promise` that settles when localhost is ready.
 
 Type: `number`<br>
 Default: `80`
+
+#### options
+
+##### method
+
+Type: `string`<br>
+Default: `HEAD`
 
 
 ## Related
