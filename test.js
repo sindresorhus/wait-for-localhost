@@ -13,7 +13,27 @@ test('main', async t => {
 		t.pass();
 	});
 
-	await waitForLocalhost(server.port);
+	await waitForLocalhost({port: server.port});
+
+	t.pass();
+
+	await server.close();
+});
+
+test('use get method', async t => {
+	t.plan(2);
+
+	const server = await createTestServer();
+	server.get('/', async (request, response) => {
+		await delay(1000);
+		response.end();
+		t.pass();
+	});
+
+	await waitForLocalhost({
+		port: server.port,
+		useGet: true
+	});
 
 	t.pass();
 
