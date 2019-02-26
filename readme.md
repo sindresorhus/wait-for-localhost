@@ -18,7 +18,7 @@ $ npm install --global wait-for-localhost
 const waitForLocalhost = require('wait-for-localhost');
 
 (async () => {
-	await waitForLocalhost(8080);
+	await waitForLocalhost({port: 8080});
 	console.log('Server is ready');
 })();
 ```
@@ -41,7 +41,7 @@ Default: `80`
 
 ##### useGet
 
-Type: `string`<br>
+Type: `boolean`<br>
 Default: `false`
 
 Use the `GET` HTTP-method instead of `HEAD` to check if the server is running.
