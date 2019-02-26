@@ -13,10 +13,11 @@
 		"node": ">=6"
 	},
 	"scripts": {
-		"test": "xo && ava"
+		"test": "xo && ava && tsd-check"
 	},
 	"files": [
-		"index.js"
+		"index.js",
+		"index.d.ts"
 	],
 	"keywords": [
 		"wait",
@@ -31,6 +32,7 @@
 		"ava": "*",
 		"create-test-server": "^2.1.1",
 		"delay": "^2.0.0",
+		"tsd-check": "^0.3.0",
 		"xo": "*"
 	}
 }
