@@ -6,6 +6,7 @@ export interface Options {
 
 	/**
 	 * Use the `GET` HTTP-method instead of `HEAD` to check if the server is running.
+	 *
 	 * @default false
 	 */
 	useGet?: boolean;
