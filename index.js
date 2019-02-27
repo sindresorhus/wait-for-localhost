@@ -1,6 +1,6 @@
 const http = require('http');
 
-module.exports = options => {
+const waitForLocalhost = options => {
 	options = Object.assign({}, options);
 
 	return new Promise(resolve => {
@@ -24,3 +24,6 @@ module.exports = options => {
 		main();
 	});
 };
+
+module.exports = waitForLocalhost;
+module.exports.default = waitForLocalhost;
