@@ -27,4 +27,5 @@ const waitForLocalhost = options => {
 };
 
 module.exports = waitForLocalhost;
+// TODO: Remove this for the next major release
 module.exports.default = waitForLocalhost;
