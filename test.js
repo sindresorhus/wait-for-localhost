@@ -39,3 +39,23 @@ test('use get method', async t => {
 
 	await server.close();
 });
+
+test('use custom path', async t => {
+	t.plan(2);
+
+	const server = await createTestServer();
+	server.get('/health', async (request, response) => {
+		await delay(1000);
+		response.end();
+		t.pass();
+	});
+
+	await waitForLocalhost({
+		port: server.port,
+		path: '/health'
+	});
+
+	t.pass();
+
+	await server.close();
+});

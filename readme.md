@@ -39,6 +39,15 @@ Type: `Object`
 Type: `number`<br>
 Default: `80`
 
+##### path
+
+Type: `string`<br>
+Default: `'/'`
+
+Use a custom path.
+
+For example, `/health` for a health-check endpoint.
+
 ##### useGet
 
 Type: `boolean`<br>
