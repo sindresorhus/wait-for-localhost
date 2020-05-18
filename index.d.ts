@@ -5,6 +5,11 @@ declare namespace waitForLocalhost {
 		 */
 		port?: number;
 
+				/**
+		@default '/''
+		 */
+		path?: string;
+
 		/**
 		Use the `GET` HTTP-method instead of `HEAD` to check if the server is running.
 

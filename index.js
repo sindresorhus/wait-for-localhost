@@ -10,7 +10,7 @@ const waitForLocalhost = options => {
 		const method = options.useGet ? 'GET' : 'HEAD';
 
 		const main = () => {
-			const request = http.request({method, port: options.port}, response => {
+			const request = http.request({method, port: options.port, path: options.path}, response => {
 				if (response.statusCode === 200) {
 					return resolve();
 				}

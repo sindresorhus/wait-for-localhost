@@ -39,6 +39,11 @@ Type: `Object`
 Type: `number`<br>
 Default: `80`
 
+##### path
+
+Type: `string`<br>
+Default: `/`
+
 ##### useGet
 
 Type: `boolean`<br>
