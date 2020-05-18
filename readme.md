@@ -42,9 +42,11 @@ Default: `80`
 ##### path
 
 Type: `string`<br>
-Default: `/`
+Default: `'/'`
 
-Use a custom path, e.g. `/health` for a health-check endpoint
+Use a custom path.
+
+For example, `/health` for a health-check endpoint.
 
 ##### useGet
 
