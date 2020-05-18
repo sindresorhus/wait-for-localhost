@@ -6,9 +6,11 @@ declare namespace waitForLocalhost {
 		port?: number;
 
 		/**
-		Use a custom `path`, e.g. `/health` for a health-check endpoint
+		Use a custom path.
+		
+		For example, `/health` for a health-check endpoint.
 
-		@default '/''
+		@default '/'
 		*/
 		path?: string;
 
