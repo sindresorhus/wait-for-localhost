@@ -44,6 +44,8 @@ Default: `80`
 Type: `string`<br>
 Default: `/`
 
+Use a custom path, e.g. `/health` for a health-check endpoint
+
 ##### useGet
 
 Type: `boolean`<br>
