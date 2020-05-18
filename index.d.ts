@@ -5,7 +5,7 @@ declare namespace waitForLocalhost {
 		 */
 		port?: number;
 
-				/**
+		/**
 		@default '/''
 		 */
 		path?: string;
