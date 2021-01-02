@@ -1,4 +1,4 @@
-# wait-for-localhost [![Build Status](https://travis-ci.org/sindresorhus/wait-for-localhost.svg?branch=master)](https://travis-ci.org/sindresorhus/wait-for-localhost)
+# wait-for-localhost
 
 > Wait for localhost to be ready
 
