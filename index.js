@@ -1,18 +1,18 @@
-'use strict';
-const http = require('http');
+import http from 'node:http';
 
-const waitForLocalhost = options => {
-	options = Object.assign({}, options);
-
+export default function waitForLocalhost({port, path, useGet} = {}) {
 	return new Promise(resolve => {
-		const retry = () => setTimeout(main, 200);
+		const retry = () => {
+			setTimeout(main, 200);
+		};
 
-		const method = options.useGet ? 'GET' : 'HEAD';
+		const method = useGet ? 'GET' : 'HEAD';
 
 		const main = () => {
-			const request = http.request({method, port: options.port, path: options.path}, response => {
+			const request = http.request({method, port, path}, response => {
 				if (response.statusCode === 200) {
-					return resolve();
+					resolve();
+					return;
 				}
 
 				retry();
@@ -24,8 +24,4 @@ const waitForLocalhost = options => {
 
 		main();
 	});
-};
-
-module.exports = waitForLocalhost;
-// TODO: Remove this for the next major release
-module.exports.default = waitForLocalhost;
+}

@@ -1,5 +1,5 @@
 import {expectType} from 'tsd';
-import waitForLocalhost = require('.');
+import waitForLocalhost from './index.js';
 
 expectType<Promise<void>>(waitForLocalhost());
 expectType<Promise<void>>(waitForLocalhost({port: 8080}));

@@ -1,7 +1,7 @@
 import test from 'ava';
 import delay from 'delay';
 import createTestServer from 'create-test-server';
-import waitForLocalhost from '.';
+import waitForLocalhost from './index.js';
 
 test('main', async t => {
 	t.plan(2);
@@ -32,7 +32,7 @@ test('use get method', async t => {
 
 	await waitForLocalhost({
 		port: server.port,
-		useGet: true
+		useGet: true,
 	});
 
 	t.pass();
@@ -52,7 +52,7 @@ test('use custom path', async t => {
 
 	await waitForLocalhost({
 		port: server.port,
-		path: '/health'
+		path: '/health',
 	});
 
 	t.pass();
