@@ -6,8 +6,8 @@ Useful if you need a local server to be ready to accept requests before doing ot
 
 ## Install
 
-```
-$ npm install wait-for-localhost
+```sh
+npm install wait-for-localhost
 ```
 
 ## Usage
@@ -23,7 +23,9 @@ console.log('Server is ready');
 
 ### waitForLocalHost(options?)
 
-Returns a `Promise` that settles when localhost is ready.
+Returns a `Promise<object>` that settles when localhost is ready.
+
+The object contains a `ipVersion` property with a value of either `6` or `4` depending on the IP version that was used.
 
 #### options
 
