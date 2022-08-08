@@ -15,15 +15,23 @@ $ npm install wait-for-localhost
 ```js
 import waitForLocalhost from 'wait-for-localhost';
 
-await waitForLocalhost({port: 8080});
-console.log('Server is ready');
+const {ipVersion} = await waitForLocalhost({ port: 8080 });
+console.log(`Server is ready on IPv${ipVersion}`);
 ```
 
 ## API
 
 ### waitForLocalHost(options?)
 
-Returns a `Promise` that settles when localhost is ready.
+Returns a `Promise` that settles with a result object when localhost is ready.
+
+#### result
+
+##### ipVersion
+
+Type: `4 | 6`
+
+The ip version the port was found on.
 
 #### options
 
