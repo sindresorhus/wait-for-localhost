@@ -8,10 +8,10 @@ export default function waitForLocalhost({port, path, useGet} = {}) {
 
 		const method = useGet ? 'GET' : 'HEAD';
 
-		const doRequest = (family, next) => {
-			const request = http.request({method, port, path, family}, response => {
+		const doRequest = (ipVersion, next) => {
+			const request = http.request({method, port, path, family: ipVersion}, response => {
 				if (response.statusCode === 200) {
-					resolve({family});
+					resolve({ipVersion});
 					return;
 				}
 

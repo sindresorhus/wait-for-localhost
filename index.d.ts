@@ -32,4 +32,4 @@ await waitForLocalhost({port: 8080});
 console.log('Server is ready');
 ```
 */
-export default function waitForLocalhost(options?: Options): Promise<{family: 4|6}>;
+export default function waitForLocalhost(options?: Options): Promise<{ipVersion: 4 | 6}>;
