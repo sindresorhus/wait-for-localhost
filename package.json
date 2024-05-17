@@ -1,6 +1,6 @@
 {
 	"name": "wait-for-localhost",
-	"version": "4.0.1",
+	"version": "4.1.0",
 	"description": "Wait for localhost to be ready",
 	"license": "MIT",
 	"repository": "sindresorhus/wait-for-localhost",
