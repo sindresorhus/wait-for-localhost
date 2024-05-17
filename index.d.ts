@@ -19,6 +19,13 @@ export interface Options {
 	@default false
 	*/
 	useGet?: boolean;
+
+	/**
+	HTTP status code to consider as successful response
+
+	@default 200
+	*/
+	statusCode?: number | number[];
 }
 
 /**
