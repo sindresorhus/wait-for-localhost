@@ -21,11 +21,11 @@ export interface Options {
 	useGet?: boolean;
 
 	/**
-	HTTP status code to consider as successful response
+	HTTP status codes to consider as successful response.
 
-	@default 200
+	@default [200]
 	*/
-	statusCode?: number | number[];
+	statusCodes?: number[];
 }
 
 /**

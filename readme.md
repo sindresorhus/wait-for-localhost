@@ -52,12 +52,12 @@ Default: `false`
 
 Use the `GET` HTTP-method instead of `HEAD` to check if the server is running.
 
-##### statusCode
+##### statusCodes
 
-Type: `number | number[]`\
-Default: `200`
+Type: `number[]`\
+Default: `[200]`
 
-Define one or multiple HTTP status codes indicating the server is ready.
+HTTP status codes to consider as successful response.
 
 ## Related
 

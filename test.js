@@ -60,27 +60,7 @@ test('use custom path', async t => {
 	await server.close();
 });
 
-test('use custom statusCode', async t => {
-	t.plan(2);
-
-	const server = await createTestServer();
-	server.get('/', async (request, response) => {
-		await delay(1000);
-		response.status(201).end();
-		t.pass();
-	});
-
-	await waitForLocalhost({
-		port: server.port,
-		statusCode: 201,
-	});
-
-	t.pass();
-
-	await server.close();
-});
-
-test('use custom statusCode list', async t => {
+test('use custom statusCodes', async t => {
 	t.plan(2);
 
 	const server = await createTestServer();
@@ -92,7 +72,7 @@ test('use custom statusCode list', async t => {
 
 	await waitForLocalhost({
 		port: server.port,
-		statusCode: [201, 202],
+		statusCodes: [201, 202],
 	});
 
 	t.pass();
