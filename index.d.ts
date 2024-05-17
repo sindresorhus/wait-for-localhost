@@ -21,7 +21,7 @@ export interface Options {
 	useGet?: boolean;
 
 	/**
-	HTTP status codes to consider as successful response.
+	HTTP status codes to consider as successful responses.
 
 	@default [200]
 	*/
