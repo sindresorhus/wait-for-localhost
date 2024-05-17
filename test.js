@@ -99,4 +99,3 @@ test('use custom statusCode list', async t => {
 
 	await server.close();
 });
-
