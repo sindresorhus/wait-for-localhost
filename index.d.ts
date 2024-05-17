@@ -25,7 +25,7 @@ export interface Options {
 
 	@default [200]
 	*/
-	statusCodes?: number[];
+	statusCodes?: readonly number[];
 }
 
 /**
