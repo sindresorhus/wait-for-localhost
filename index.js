@@ -1,6 +1,6 @@
 import http from 'node:http';
 
-export default function waitForLocalhost({port, path, useGet} = {}) {
+export default function waitForLocalhost({port, path, useGet, statusCodes = [200]} = {}) {
 	return new Promise(resolve => {
 		const retry = () => {
 			setTimeout(main, 200);
@@ -10,7 +10,7 @@ export default function waitForLocalhost({port, path, useGet} = {}) {
 
 		const doRequest = (ipVersion, next) => {
 			const request = http.request({method, port, path, family: ipVersion}, response => {
-				if (response.statusCode === 200) {
+				if (statusCodes.includes(response.statusCode)) {
 					resolve({ipVersion});
 					return;
 				}

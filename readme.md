@@ -52,6 +52,13 @@ Default: `false`
 
 Use the `GET` HTTP-method instead of `HEAD` to check if the server is running.
 
+##### statusCodes
+
+Type: `number[]`\
+Default: `[200]`
+
+HTTP status codes to consider as successful responses.
+
 ## Related
 
 - [wait-for-localhost-cli](https://github.com/sindresorhus/wait-for-localhost-cli) - CLI for this module

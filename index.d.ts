@@ -19,6 +19,13 @@ export interface Options {
 	@default false
 	*/
 	useGet?: boolean;
+
+	/**
+	HTTP status codes to consider as successful responses.
+
+	@default [200]
+	*/
+	statusCodes?: readonly number[];
 }
 
 /**
