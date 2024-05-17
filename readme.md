@@ -57,7 +57,7 @@ Use the `GET` HTTP-method instead of `HEAD` to check if the server is running.
 Type: `number[]`\
 Default: `[200]`
 
-HTTP status codes to consider as successful response.
+HTTP status codes to consider as successful responses.
 
 ## Related
 
