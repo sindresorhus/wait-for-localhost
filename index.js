@@ -4,18 +4,31 @@ import http2 from 'node:http2';
 const RETRY_DELAY = 200;
 const HTTP1_ATTEMPTS = 6; // 3 rounds × 2 IP versions
 
-export default function waitForLocalhost({port = 80, path = '/', useGet, statusCodes = [200]} = {}) {
-	return new Promise(resolve => {
+export default function waitForLocalhost({port = 80, path = '/', useGet, statusCodes = [200], signal} = {}) {
+	return new Promise((resolve, reject) => {
 		let attemptCount = 0;
 		const method = useGet ? 'GET' : 'HEAD';
+		let retryTimeout;
 
-		const handleSuccess = ipVersion => {
-			resolve({ipVersion});
+		if (signal?.aborted) {
+			reject(signal.reason);
+			return;
+		}
+
+		const cleanup = () => {
+			if (retryTimeout) {
+				clearTimeout(retryTimeout);
+			}
 		};
+
+		signal?.addEventListener('abort', () => {
+			cleanup();
+			reject(signal.reason);
+		}, {once: true});
 
 		const handleResponse = (statusCode, ipVersion, onError) => {
 			if (statusCodes.includes(statusCode)) {
-				handleSuccess(ipVersion);
+				resolve({ipVersion});
 			} else {
 				onError();
 			}
@@ -27,6 +40,7 @@ export default function waitForLocalhost({port = 80, path = '/', useGet, statusC
 				port,
 				path,
 				family: ipVersion,
+				signal,
 			}, response => {
 				handleResponse(response.statusCode, ipVersion, onError);
 			});
@@ -39,18 +53,19 @@ export default function waitForLocalhost({port = 80, path = '/', useGet, statusC
 			const hostname = ipVersion === 6 ? '[::1]' : 'localhost';
 			const client = http2.connect(`http://${hostname}:${port}`);
 
-			const cleanup = () => {
+			const cleanupClient = () => {
 				if (!client.destroyed) {
 					client.destroy();
 				}
 			};
 
-			const handleError = () => {
-				cleanup();
-				onError();
-			};
+			// Cleanup on abort
+			signal?.addEventListener('abort', cleanupClient, {once: true});
 
-			client.on('error', handleError);
+			client.on('error', () => {
+				cleanupClient();
+				onError();
+			});
 
 			const request = client.request({
 				':method': method,
@@ -58,11 +73,15 @@ export default function waitForLocalhost({port = 80, path = '/', useGet, statusC
 			});
 
 			request.on('response', headers => {
-				cleanup();
+				cleanupClient();
 				handleResponse(headers[':status'], ipVersion, onError);
 			});
 
-			request.on('error', handleError);
+			request.on('error', () => {
+				cleanupClient();
+				onError();
+			});
+
 			request.end();
 		};
 
@@ -73,7 +92,7 @@ export default function waitForLocalhost({port = 80, path = '/', useGet, statusC
 		};
 
 		const retry = () => {
-			setTimeout(attempt, RETRY_DELAY);
+			retryTimeout = setTimeout(attempt, RETRY_DELAY);
 		};
 
 		const attempt = () => {

@@ -167,3 +167,20 @@ test('should handle HTTP/2-only server with custom path', async t => {
 
 	server.close();
 });
+
+test('should support AbortSignal.timeout()', async t => {
+	const startTime = Date.now();
+
+	try {
+		await waitForLocalhost({
+			port: 9999, // Non-existent server
+			signal: AbortSignal.timeout(500),
+		});
+		t.fail('Should have timed out');
+	} catch (error) {
+		const elapsed = Date.now() - startTime;
+		t.true(elapsed >= 500, 'Should timeout after 500ms');
+		t.true(elapsed < 700, 'Should timeout close to 500ms');
+		t.is(error.name, 'TimeoutError');
+	}
+});

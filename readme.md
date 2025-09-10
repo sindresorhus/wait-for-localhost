@@ -61,6 +61,22 @@ Default: `[200]`
 
 HTTP status codes to consider as successful responses.
 
+##### signal
+
+Type: `AbortSignal`
+
+An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) to abort the operation.
+
+```js
+import waitForLocalhost from 'wait-for-localhost';
+
+// Timeout after 5 seconds
+await waitForLocalhost({
+	port: 8080,
+	signal: AbortSignal.timeout(5000)
+});
+```
+
 ## Related
 
 - [wait-for-localhost-cli](https://github.com/sindresorhus/wait-for-localhost-cli) - CLI for this module
