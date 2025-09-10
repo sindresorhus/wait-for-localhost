@@ -1,80 +1,85 @@
 import http from 'node:http';
 import http2 from 'node:http2';
 
-export default function waitForLocalhost({port, path, useGet, statusCodes = [200]} = {}) {
+const RETRY_DELAY = 200;
+const HTTP1_ATTEMPTS = 6; // 3 rounds × 2 IP versions
+
+export default function waitForLocalhost({port = 80, path = '/', useGet, statusCodes = [200]} = {}) {
 	return new Promise(resolve => {
 		let attemptCount = 0;
 		const method = useGet ? 'GET' : 'HEAD';
-		const targetPath = path || '/';
 
-		const tryRequest = (protocol, ipVersion, onError) => {
-			if (protocol === 'http1') {
-				const request = http.request({
-					method,
-					port,
-					path,
-					family: ipVersion,
-				}, response => {
-					if (statusCodes.includes(response.statusCode)) {
-						resolve({ipVersion});
-					} else {
-						onError();
-					}
-				});
+		const handleSuccess = ipVersion => {
+			resolve({ipVersion});
+		};
 
-				request.on('error', onError);
-				request.end();
+		const handleResponse = (statusCode, ipVersion, onError) => {
+			if (statusCodes.includes(statusCode)) {
+				handleSuccess(ipVersion);
 			} else {
-				const hostname = ipVersion === 6 ? '[::1]' : 'localhost';
-				const client = http2.connect(`http://${hostname}:${port || 80}`);
-
-				const cleanup = () => {
-					if (!client.closed) {
-						client.close();
-					}
-				};
-
-				const handleError = () => {
-					cleanup();
-					onError();
-				};
-
-				client.on('error', handleError);
-
-				const request = client.request({
-					':method': method,
-					':path': targetPath,
-				});
-
-				request.on('response', headers => {
-					const statusCode = headers[':status'];
-					cleanup();
-
-					if (statusCodes.includes(statusCode)) {
-						resolve({ipVersion});
-					} else {
-						onError();
-					}
-				});
-
-				request.on('error', handleError);
-				request.end();
+				onError();
 			}
 		};
 
+		const tryHttp1 = (ipVersion, onError) => {
+			const request = http.request({
+				method,
+				port,
+				path,
+				family: ipVersion,
+			}, response => {
+				handleResponse(response.statusCode, ipVersion, onError);
+			});
+
+			request.on('error', onError);
+			request.end();
+		};
+
+		const tryHttp2 = (ipVersion, onError) => {
+			const hostname = ipVersion === 6 ? '[::1]' : 'localhost';
+			const client = http2.connect(`http://${hostname}:${port}`);
+
+			const cleanup = () => {
+				if (!client.destroyed) {
+					client.destroy();
+				}
+			};
+
+			const handleError = () => {
+				cleanup();
+				onError();
+			};
+
+			client.on('error', handleError);
+
+			const request = client.request({
+				':method': method,
+				':path': path,
+			});
+
+			request.on('response', headers => {
+				cleanup();
+				handleResponse(headers[':status'], ipVersion, onError);
+			});
+
+			request.on('error', handleError);
+			request.end();
+		};
+
+		const tryRequest = (ipVersion, onError) => {
+			const useHttp2 = attemptCount > HTTP1_ATTEMPTS;
+			const requestFunction = useHttp2 ? tryHttp2 : tryHttp1;
+			requestFunction(ipVersion, onError);
+		};
+
 		const retry = () => {
-			setTimeout(attempt, 200);
+			setTimeout(attempt, RETRY_DELAY);
 		};
 
 		const attempt = () => {
 			attemptCount++;
-
-			// Try HTTP/1 first (3 rounds), then HTTP/2
-			const useHttp2 = attemptCount > 6; // 3 attempts × 2 IP versions
-			const protocol = useHttp2 ? 'http2' : 'http1';
-
-			tryRequest(protocol, 4, () => {
-				tryRequest(protocol, 6, retry);
+			tryRequest(4, () => {
+				tryRequest(6, retry);
 			});
 		};
 

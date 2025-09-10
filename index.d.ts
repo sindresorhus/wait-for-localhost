@@ -1,4 +1,4 @@
-export interface Options {
+export type Options = {
 	/**
 	@default 80
 	*/
@@ -26,7 +26,7 @@ export interface Options {
 	@default [200]
 	*/
 	statusCodes?: readonly number[];
-}
+};
 
 /**
 Wait for localhost to be ready.
