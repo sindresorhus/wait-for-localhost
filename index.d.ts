@@ -31,6 +31,8 @@ export interface Options {
 /**
 Wait for localhost to be ready.
 
+Supports both HTTP/1 and HTTP/2 servers with automatic fallback.
+
 @example
 ```
 import waitForLocalhost from 'wait-for-localhost';

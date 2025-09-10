@@ -4,6 +4,8 @@
 
 Useful if you need a local server to be ready to accept requests before doing other things.
 
+Supports both HTTP/1 and HTTP/2 servers with automatic fallback.
+
 ## Install
 
 ```sh
