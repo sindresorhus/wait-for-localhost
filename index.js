@@ -45,10 +45,12 @@ const tryHttp2 = ({
 	const client = http2.connect(`http://${hostname}:${port}`);
 
 	const cleanup = () => {
-		signal?.removeEventListener('abort', cleanup, {once: true});
+		signal?.removeEventListener('abort', cleanup);
 		client.off('error', handleClientError);
 		request.off('response', handleRequestResponse);
 		request.off('error', handleRequestError);
+
+		// Add noop error handlers to prevent unhandled error events during cleanup
 		client.on('error', noop);
 		request.on('error', noop);
 		if (!client.destroyed) {

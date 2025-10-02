@@ -23,11 +23,11 @@ console.log('Server is ready');
 
 ## API
 
-### waitForLocalHost(options?)
+### waitForLocalhost(options?)
 
 Returns a `Promise<object>` that settles when localhost is ready.
 
-The object contains a `ipVersion` property with a value of either `6` or `4` depending on the IP version that was used.
+The object contains an `ipVersion` property with a value of either `6` or `4` depending on the IP version that was used.
 
 #### options
 

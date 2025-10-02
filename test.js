@@ -194,7 +194,7 @@ test('should not loop on error', async t => {
 			path: '/json/list',
 			useGet: true,
 		});
-		t.fail('should have timeout out');
+		t.fail('should have timed out');
 	} catch (error) {
 		t.is(error.name, 'TimeoutError');
 	}
