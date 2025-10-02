@@ -184,3 +184,18 @@ test('should support AbortSignal.timeout()', async t => {
 		t.is(error.name, 'TimeoutError');
 	}
 });
+
+test('should not loop on error', async t => {
+	t.timeout(40_000);
+	try {
+		await waitForLocalhost({
+			port: 5879,
+			signal: AbortSignal.timeout(30_000),
+			path: '/json/list',
+			useGet: true,
+		});
+		t.fail('should have timeout out');
+	} catch (error) {
+		t.is(error.name, 'TimeoutError');
+	}
+});
