@@ -1,5 +1,5 @@
-import http from "node:http";
-import http2 from "node:http2";
+import http from 'node:http';
+import http2 from 'node:http2';
 
 const RETRY_DELAY = 200;
 const HTTP1_ATTEMPTS = 6; // 3 rounds × 2 IP versions
@@ -21,12 +21,12 @@ const tryHttp1 = (
 			family: ipVersion,
 			signal,
 		},
-		(response) => {
+		response => {
 			handleResponse(response.statusCode, ipVersion, onError);
 		},
 	);
 
-	request.on("error", onError);
+	request.on('error', onError);
 	request.end();
 };
 
@@ -41,62 +41,63 @@ const tryHttp2 = (
 	signal,
 	handleResponse,
 ) => {
-	const hostname = ipVersion === 6 ? "[::1]" : "localhost";
+	const hostname = ipVersion === 6 ? '[::1]' : 'localhost';
 	const client = http2.connect(`http://${hostname}:${port}`);
 
 	const cleanup = () => {
-		signal?.removeEventListener("abort", cleanup, { once: true });
-		client.off("error", handleClientError);
-		request.off("response", handleRequestResponse);
-		request.off("error", handleRequestError);
-		client.on("error", noop);
-		request.on("error", noop);
+		signal?.removeEventListener('abort', cleanup, {once: true});
+		client.off('error', handleClientError);
+		request.off('response', handleRequestResponse);
+		request.off('error', handleRequestError);
+		client.on('error', noop);
+		request.on('error', noop);
 		if (!client.destroyed) {
 			client.destroy();
 		}
 	};
 
 	// Cleanup on abort
-	signal?.addEventListener("abort", cleanup, { once: true });
+	signal?.addEventListener('abort', cleanup, {once: true});
 
 	const handleClientError = () => {
 		cleanup();
 		onError();
 	};
 
-	client.on("error", handleClientError);
+	client.on('error', handleClientError);
 
 	const request = client.request({
-		":method": method,
-		":path": path,
+		':method': method,
+		':path': path,
 	});
 
-	const handleRequestResponse = (headers) => {
+	const handleRequestResponse = headers => {
 		cleanup();
-		handleResponse(headers[":status"], ipVersion, onError);
+		handleResponse(headers[':status'], ipVersion, onError);
 	};
 
-	request.on("response", handleRequestResponse);
+	request.on('response', handleRequestResponse);
 
 	const handleRequestError = () => {
 		cleanup();
 		onError();
 	};
-	request.on("error", handleRequestError);
+
+	request.on('error', handleRequestError);
 
 	request.end();
 };
 
 export default function waitForLocalhost({
 	port = 80,
-	path = "/",
+	path = '/',
 	useGet,
 	statusCodes = [200],
 	signal,
 } = {}) {
 	return new Promise((resolve, reject) => {
 		let attemptCount = 0;
-		const method = useGet ? "GET" : "HEAD";
+		const method = useGet ? 'GET' : 'HEAD';
 		let retryTimeout;
 
 		if (signal?.aborted) {
@@ -111,17 +112,17 @@ export default function waitForLocalhost({
 		};
 
 		signal?.addEventListener(
-			"abort",
+			'abort',
 			() => {
 				cleanup();
 				reject(signal.reason);
 			},
-			{ once: true },
+			{once: true},
 		);
 
 		const handleResponse = (statusCode, ipVersion, onError) => {
 			if (statusCodes.includes(statusCode)) {
-				resolve({ ipVersion });
+				resolve({ipVersion});
 			} else {
 				onError();
 			}
