@@ -4,7 +4,7 @@ import http2 from 'node:http2';
 const RETRY_DELAY = 200;
 const HTTP1_ATTEMPTS = 6; // 3 rounds × 2 IP versions
 
-const tryHttp1 = (
+const tryHttp1 = ({
 	ipVersion,
 	onError,
 	method,
@@ -12,7 +12,7 @@ const tryHttp1 = (
 	path,
 	signal,
 	handleResponse,
-) => {
+}) => {
 	const request = http.request(
 		{
 			method,
@@ -32,7 +32,7 @@ const tryHttp1 = (
 
 const noop = () => {};
 
-const tryHttp2 = (
+const tryHttp2 = ({
 	ipVersion,
 	onError,
 	method,
@@ -40,7 +40,7 @@ const tryHttp2 = (
 	path,
 	signal,
 	handleResponse,
-) => {
+}) => {
 	const hostname = ipVersion === 6 ? '[::1]' : 'localhost';
 	const client = http2.connect(`http://${hostname}:${port}`);
 
@@ -131,7 +131,7 @@ export default function waitForLocalhost({
 		const tryRequest = (ipVersion, onError) => {
 			const useHttp2 = attemptCount > HTTP1_ATTEMPTS;
 			const requestFunction = useHttp2 ? tryHttp2 : tryHttp1;
-			requestFunction(
+			requestFunction({
 				ipVersion,
 				onError,
 				method,
@@ -139,7 +139,7 @@ export default function waitForLocalhost({
 				path,
 				signal,
 				handleResponse,
-			);
+			});
 		};
 
 		const retry = () => {
