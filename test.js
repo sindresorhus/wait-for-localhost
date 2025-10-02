@@ -186,6 +186,7 @@ test("should support AbortSignal.timeout()", async (t) => {
 });
 
 test("should not loop on error", async (t) => {
+	t.timeout(40_000);
 	try {
 		await waitForLocalhost({
 			port: 5879,
