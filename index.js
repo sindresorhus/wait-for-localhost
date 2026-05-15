@@ -2,7 +2,6 @@ import http from 'node:http';
 import http2 from 'node:http2';
 
 const RETRY_DELAY = 200;
-const HTTP1_ATTEMPTS = 6; // 3 rounds × 2 IP versions
 
 const tryHttp1 = ({
 	ipVersion,
@@ -98,7 +97,6 @@ export default function waitForLocalhost({
 	signal,
 } = {}) {
 	return new Promise((resolve, reject) => {
-		let attemptCount = 0;
 		const method = useGet ? 'GET' : 'HEAD';
 		let retryTimeout;
 
@@ -130,9 +128,7 @@ export default function waitForLocalhost({
 			}
 		};
 
-		const tryRequest = (ipVersion, onError) => {
-			const useHttp2 = attemptCount > HTTP1_ATTEMPTS;
-			const requestFunction = useHttp2 ? tryHttp2 : tryHttp1;
+		const tryRequest = (ipVersion, requestFunction, onError) => {
 			requestFunction({
 				ipVersion,
 				onError,
@@ -149,9 +145,12 @@ export default function waitForLocalhost({
 		};
 
 		const attempt = () => {
-			attemptCount++;
-			tryRequest(4, () => {
-				tryRequest(6, retry);
+			tryRequest(4, tryHttp1, () => {
+				tryRequest(6, tryHttp1, () => {
+					tryRequest(4, tryHttp2, () => {
+						tryRequest(6, tryHttp2, retry);
+					});
+				});
 			});
 		};
 
