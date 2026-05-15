@@ -1,4 +1,5 @@
 import {promisify} from 'node:util';
+import http from 'node:http';
 import http2 from 'node:http2';
 import test from 'ava';
 import delay from 'delay';
@@ -166,6 +167,37 @@ test('should handle HTTP/2-only server with custom path', async t => {
 	t.truthy(result);
 
 	server.close();
+});
+
+test('should keep trying HTTP/1 while waiting for delayed server', async t => {
+	const reservation = http.createServer();
+	await promisify(reservation.listen.bind(reservation))(0, '127.0.0.1');
+	const {port} = reservation.address();
+	await promisify(reservation.close.bind(reservation))();
+
+	const server = http.createServer((request, response) => {
+		response.end();
+	});
+
+	const serverStarted = (async () => {
+		await delay(2000);
+		await promisify(server.listen.bind(server))(port, '127.0.0.1');
+	})();
+
+	try {
+		const result = await waitForLocalhost({
+			port,
+			signal: AbortSignal.timeout(5000),
+		});
+
+		t.is(result.ipVersion, 4);
+	} finally {
+		await serverStarted;
+
+		if (server.listening) {
+			await promisify(server.close.bind(server))();
+		}
+	}
 });
 
 test('should support AbortSignal.timeout()', async t => {
